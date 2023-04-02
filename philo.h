@@ -6,7 +6,7 @@
 /*   By: angalsty <angalsty@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 19:22:35 by angalsty          #+#    #+#             */
-/*   Updated: 2023/03/31 22:55:18 by angalsty         ###   ########.fr       */
+/*   Updated: 2023/04/02 20:39:48 by angalsty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-# define	MAX_PHILO 200
+# define MAX_PHILO 200
 
 typedef struct s_philo
 {
 	int				meals;
-	int				counted;
 	int				index;
 	time_t			last_meal;
 	int				left_fork;
@@ -40,12 +39,11 @@ typedef struct s_data
 	int				time_to_sleep;
 	int				time_to_die;
 	int				n_meals;
-	int				dead;
-	int				finished;
 	int				run;
 	time_t			start_time;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	writing;
+	pthread_mutex_t	checking;
 	pthread_t		*ph_threads;
 	pthread_t		*monitor;
 	t_philo			*philo;
@@ -54,7 +52,7 @@ typedef struct s_data
 
 time_t				get_time(void);
 int					ft_check_arg(t_data *data, int argc, char **argv);
-int                 ft_is_digit_str(char *str);
+int					ft_is_digit_str(char *str);
 int					ft_atol(const char *str);
 void				ft_init_args(t_data *data, int argc, char **argv);
 void				ft_philos_init(t_data *data);
@@ -72,8 +70,7 @@ int					ft_get_fork(t_philo *philo);
 void				ft_eat(t_philo *philo);
 void				ft_sleep(t_philo *philo);
 void				ft_think(t_philo *philo);
-void                *unlocker(t_philo *philo);
-void				*ft_alone(t_philo *philo);
-
+void				*unlocker(t_philo *philo);
+int					ft_continue_condition(t_philo *philo);
 
 #endif

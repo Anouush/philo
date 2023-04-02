@@ -6,7 +6,7 @@
 /*   By: angalsty <angalsty@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/14 12:17:28 by angalsty          #+#    #+#             */
-/*   Updated: 2023/03/31 22:55:14 by angalsty         ###   ########.fr       */
+/*   Updated: 2023/04/02 20:40:14 by angalsty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	ft_philos_init(t_data *data)
 		data->philo[i].meals = 0;
 		data->philo[i].index = i;
 		data->philo[i].data = data;
-		data->philo[i].counted = 0;
 		data->philo[i].last_meal = data->start_time;
 		i++;
 	}
@@ -41,6 +40,7 @@ void	ft_mutex_init(t_data *data)
 	while (++i < data->n_philo)
 		pthread_mutex_init(&data->forks[i], NULL);
 	pthread_mutex_init(&data->writing, NULL);
+	pthread_mutex_init(&data->checking, NULL);
 }
 
 void	ft_init_args(t_data *data, int argc, char **argv)
@@ -50,8 +50,6 @@ void	ft_init_args(t_data *data, int argc, char **argv)
 	data->time_to_die = ft_atol(argv[2]);
 	data->time_to_eat = ft_atol(argv[3]);
 	data->time_to_sleep = ft_atol(argv[4]);
-	data->dead = 0;
-	data->finished = 0;
 	data->n_meals = -1;
 	if (argc == 6)
 		data->n_meals = ft_atol(argv[5]);

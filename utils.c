@@ -6,7 +6,7 @@
 /*   By: angalsty <angalsty@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 20:06:42 by angalsty          #+#    #+#             */
-/*   Updated: 2023/03/31 21:35:35 by angalsty         ###   ########.fr       */
+/*   Updated: 2023/04/02 21:15:44 by angalsty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,13 @@ void	ft_sleep(t_philo *philo)
 
 void	ft_print_action(t_philo *philo, char *str)
 {
-	pthread_mutex_lock(&philo->data->writing);
-	printf("%ld %d %s", get_time() - philo->data->start_time, philo->index + 1,
-			str);
-	pthread_mutex_unlock(&philo->data->writing);
+	if (!ft_continue_condition(philo))
+	{
+		pthread_mutex_lock(&philo->data->writing);
+		printf("%ld %d %s", get_time() - philo->data->start_time, philo->index
+			+ 1, str);
+		pthread_mutex_unlock(&philo->data->writing);
+	}
 }
 
 void	ft_usleep(t_philo *philo, long time)

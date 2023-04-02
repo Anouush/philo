@@ -6,7 +6,7 @@
 /*   By: angalsty <angalsty@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 22:01:58 by angalsty          #+#    #+#             */
-/*   Updated: 2023/03/31 23:01:08 by angalsty         ###   ########.fr       */
+/*   Updated: 2023/04/02 21:14:56 by angalsty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,72 +14,65 @@
 
 int	ft_check_die(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->data->checking);
 	if (get_time() - philo->last_meal > philo->data->time_to_die)
 	{
+		if (philo->data->n_meals != -1 && philo->meals >= philo->data->n_meals)
+		{
+			return (0);
+		}
 		ft_print_action(philo, "died\n");
 		philo->data->run = 0;
-       // philo->data->dead = 1;
-		return(1);
+		pthread_mutex_unlock(&philo->data->checking);
+		return (1);
 	}
-	return(0);
+	pthread_mutex_unlock(&philo->data->checking);
+	return (0);
 }
 
-void	ft_is_full(t_philo *philo)
+void	*ft_super_unlocker(t_data *data)
 {
-	if (philo->meals >= philo->data->n_meals && philo->data->n_meals != -1 && philo->counted == 0)
-	{
-		philo->data->finished++;
-		philo->counted = 1;
-	}
-}
+	int	i;
 
-void ft_super_unlocker(t_data *data)
-{
-	int i = 0;
-	while(i < data->n_philo)
+	i = 0;
+	while (i < data->n_philo)
 		unlocker(&data->philo[i++]);
+	return (NULL);
 }
 
-int ft_all_full(t_data *data)
+int	ft_has_eat_n(t_philo *philo)
 {
-	int i = 0;
-
-	while(i < data->n_philo)
+	pthread_mutex_lock(&philo->data->checking);
+	if (philo->meals < philo->data->n_meals)
 	{
-		if(data->philo[i].counted == 0)
-			return(0);
-		i++;
+		pthread_mutex_unlock(&philo->data->checking);
+		return (1);
 	}
-	return(1);
+	pthread_mutex_unlock(&philo->data->checking);
+	return (0);
 }
 
 void	*ft_monitor(void *param)
 {
-	t_data *data;
-	int	i;
+	t_data	*data;
+	int		i;
+	int		one_not_finish;
 
 	data = param;
 	while (1)
 	{
+		one_not_finish = 0;
 		i = 0;
 		while (i < data->n_philo)
 		{
-			ft_is_full(&data->philo[i]);
-			if(ft_all_full(data))
-            {
-				write(1, "here\n", 5);
-				data->run = 0;
-				//ft_super_unlocker(data);
-				return (NULL);
-			}
+			if (data->n_meals != -1 && one_not_finish == 0)
+				one_not_finish = ft_has_eat_n(&data->philo[i]);
 			if (ft_check_die(&data->philo[i]))
-			{
-				printf("\nFINISHED = %d\n\n", data->finished);
-				ft_super_unlocker(data);
-				return (NULL);
-			}
+				return (ft_super_unlocker(data));
 			i++;
 		}
+		if (data->n_meals != -1 && one_not_finish == 0)
+			return (NULL);
 	}
 	return (NULL);
 }

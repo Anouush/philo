@@ -6,7 +6,7 @@
 /*   By: angalsty <angalsty@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 19:22:41 by angalsty          #+#    #+#             */
-/*   Updated: 2023/03/31 20:42:16 by angalsty         ###   ########.fr       */
+/*   Updated: 2023/04/02 21:16:14 by angalsty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,25 @@ int	ft_check_arg(t_data *data, int argc, char **argv)
 	i = 1;
 	if (argc != 5 && argc != 6)
 		return (0);
-	if (argc == 5 || argc == 6)
+	while (argv[i])
 	{
-		while (argv[i])
-		{
-			if (ft_is_digit_str(argv[i]) == 1 || ft_atol(argv[i]) > 2147483647 || ft_atol(argv[1]) > MAX_PHILO)
-				return (0);
-			i++;
-		}
+		if (ft_is_digit_str(argv[i]) == 1 || ft_atol(argv[i]) > 2147483647
+			|| ft_atol(argv[1]) > MAX_PHILO)
+			return (0);
+		if (i > 1 && i < 5 && ft_atol(argv[i]) < 60)
+			return (0);
+		i++;
 	}
+	if (ft_atol(argv[1]) < 1)
+		return (0);
 	ft_init_args(data, argc, argv);
 	return (1);
 }
-
-void ft(void){system("leaks -q philo");}
 
 int	main(int argc, char **argv)
 {
 	t_data	data;
 
-    atexit(ft);
 	data.start_time = get_time();
 	if (!ft_check_arg(&data, argc, argv))
 		return (write(2, "Wrong arguments\n", 17), 1);
