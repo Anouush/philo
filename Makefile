@@ -6,7 +6,7 @@
 #    By: angalsty <angalsty@student.42malaga.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/10 18:54:59 by angalsty          #+#    #+#              #
-#    Updated: 2023/04/02 21:09:42 by angalsty         ###   ########.fr        #
+#    Updated: 2023/04/03 18:57:28 by angalsty         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ CC = gcc
 
 RM = rm -rf
 
-CFLAGS = -Wall -Wextra -Werror -I. -pthread -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -I. -pthread 
 
 .c.o:
 	${CC} ${CFLAGS} -g -c $< -o ${<:.c=.o}

@@ -6,7 +6,7 @@
 /*   By: angalsty <angalsty@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 17:45:35 by angalsty          #+#    #+#             */
-/*   Updated: 2023/04/02 20:50:30 by angalsty         ###   ########.fr       */
+/*   Updated: 2023/04/03 17:52:40 by angalsty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,25 +64,3 @@ void	ft_threads_init(t_data *data)
 	data->ph_threads = threads;
 	data->monitor = checker;
 }
-
-/*int	ft_check_die(t_philo *philo)
-{
-	long	meal_limit;
-
-	meal_limit = philo->last_meal + philo->data->time_to_die;
-	if (meal_limit < get_time())
-	{
-		philo->data->dead = 1;
-		return (1);
-	}
-	//else if (philo->data->dead == 1)
-		//return (1);
-	else if (philo->meals > philo->data->n_meals && philo->data->n_meals != -1)
-	//else if (philo->meals >= philo->data->n_meals && philo->data->n_meals !=
-			-1)
-		{
-			philo->data->dead = 1;
-			return (1);
-		}
-	return (0);
-}*/

@@ -6,7 +6,7 @@
 /*   By: angalsty <angalsty@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 20:06:42 by angalsty          #+#    #+#             */
-/*   Updated: 2023/04/02 21:15:44 by angalsty         ###   ########.fr       */
+/*   Updated: 2023/04/03 18:44:06 by angalsty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,13 @@ void	ft_usleep(t_philo *philo, long time)
 	time_to_wait = get_time() + time;
 	while (get_time() < time_to_wait)
 	{
+		pthread_mutex_lock(&philo->data->checking);
 		if (!philo->data->run)
+		{
+			pthread_mutex_unlock(&philo->data->checking);
 			return ;
+		}
+		pthread_mutex_unlock(&philo->data->checking);
 		usleep(235);
 	}
 }

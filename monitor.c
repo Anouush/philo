@@ -6,7 +6,7 @@
 /*   By: angalsty <angalsty@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 22:01:58 by angalsty          #+#    #+#             */
-/*   Updated: 2023/04/02 21:14:56 by angalsty         ###   ########.fr       */
+/*   Updated: 2023/04/03 18:41:23 by angalsty         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	ft_check_die(t_philo *philo)
 		{
 			return (0);
 		}
+		pthread_mutex_unlock(&philo->data->checking);
 		ft_print_action(philo, "died\n");
+		pthread_mutex_lock(&philo->data->checking);
 		philo->data->run = 0;
 		pthread_mutex_unlock(&philo->data->checking);
 		return (1);
